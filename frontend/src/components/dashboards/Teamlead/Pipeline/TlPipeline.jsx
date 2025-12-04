@@ -1,0 +1,664 @@
+import React, { useState, useMemo } from "react";
+import {
+  Plus,
+  Filter,
+  ArrowRight,
+  GripVertical,
+  X,
+  Phone,
+  Building,
+  IndianRupee,
+  User,
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import Popup from "../../../commonpopup/popup"; // ✅ adjust path to your Popup.jsx
+
+export default function TeamLeadPipeline() {
+  const [draggedLead, setDraggedLead] = useState(null);
+  const [draggedFromColumn, setDraggedFromColumn] = useState(null);
+  const [showFilterPopover, setShowFilterPopover] = useState(false);
+  const [showAddDealModal, setShowAddDealModal] = useState(false);
+  const [newDeal, setNewDeal] = useState({
+    name: "",
+    company: "",
+    value: "",
+    phone: "",
+  });
+  const [formErrors, setFormErrors] = useState({});
+  const [formSuccess, setFormSuccess] = useState({});
+  const navigate = useNavigate();
+
+  // ✅ Popup state
+  const [popup, setPopup] = useState({
+    open: false,
+    type: "success",
+    title: "",
+    message: "",
+  });
+
+  const openPopup = (type, title, message) =>
+    setPopup({ open: true, type, title, message });
+
+  const closePopup = () =>
+    setPopup((p) => ({ ...p, open: false }));
+
+  const [columns, setColumns] = useState([
+    {
+      id: "new",
+      title: "New Leads",
+      color: "bg-gray-100",
+      leads: [
+        {
+          id: "1",
+          name: "Priya Sharma",
+          company: "Tech Corp",
+          value: "₹45,000",
+          assignedTo: "K",
+          phone: "+91 98765 43210",
+          email: "priya.sharma@email.com",
+          source: "Meta Ads",
+          status: "Hot",
+          location: "Mumbai, Maharashtra",
+          utmSource: "facebook",
+          utmMedium: "cpc",
+          utmCampaign: "winter-sale-2024",
+        },
+        {
+          id: "2",
+          name: "Rajesh Kumar",
+          company: "Digital Solutions",
+          value: "₹1,20,000",
+          assignedTo: "P",
+          phone: "+91 98765 43211",
+          email: "rajesh.kumar@email.com",
+          source: "Google Ads",
+          status: "Warm",
+          location: "Delhi, NCR",
+          utmSource: "google",
+          utmMedium: "cpc",
+          utmCampaign: "summer-2024",
+        },
+      ],
+    },
+    {
+      id: "contacted",
+      title: "Contacted",
+      color: "bg-blue-100",
+      leads: [
+        {
+          id: "3",
+          name: "Anita Desai",
+          company: "Marketing Inc",
+          value: "₹38,000",
+          assignedTo: "A",
+          phone: "+91 98765 43212",
+          email: "anita.desai@email.com",
+          source: "Referral",
+          status: "Hot",
+          location: "Bangalore, Karnataka",
+          utmSource: "direct",
+          utmMedium: "none",
+          utmCampaign: "referral",
+        },
+        {
+          id: "4",
+          name: "Vikram Singh",
+          company: "Startup XYZ",
+          value: "₹95,000",
+          assignedTo: "S",
+          phone: "+91 98765 43213",
+          email: "vikram.singh@email.com",
+          source: "LinkedIn",
+          status: "Cold",
+          location: "Hyderabad, Telangana",
+          utmSource: "linkedin",
+          utmMedium: "social",
+          utmCampaign: "b2b-leads",
+        },
+      ],
+    },
+    {
+      id: "perposel",
+      title: "perposel sent",
+      color: "bg-purple-100",
+      leads: [
+        {
+          id: "5",
+          name: "Meera Patel",
+          company: "Enterprise Co",
+          value: "₹52,000",
+          assignedTo: "R",
+          phone: "+91 98765 43214",
+          email: "meera.patel@email.com",
+          source: "Website",
+          status: "Hot",
+          location: "Chennai, Tamil Nadu",
+          utmSource: "organic",
+          utmMedium: "search",
+          utmCampaign: "organic-search",
+        },
+      ],
+    },
+    {
+      id: "payment",
+      title: "payment link sent",
+      color: "bg-orange-100",
+      leads: [
+        {
+          id: "6",
+          name: "Amit Verma",
+          company: "Consulting Ltd",
+          value: "₹28,000",
+          assignedTo: "K",
+          phone: "+91 98765 43215",
+          email: "amit.verma@email.com",
+          source: "Meta Ads",
+          status: "Warm",
+          location: "Pune, Maharashtra",
+          utmSource: "facebook",
+          utmMedium: "cpc",
+          utmCampaign: "consulting-leads",
+        },
+        {
+          id: "7",
+          name: "Sneha Reddy",
+          company: "Finance Group",
+          value: "₹67,000",
+          assignedTo: "P",
+          phone: "+91 98765 43216",
+          email: "sneha.reddy@email.com",
+          source: "Email Marketing",
+          status: "Hot",
+          location: "Ahmedabad, Gujarat",
+          utmSource: "email",
+          utmMedium: "email",
+          utmCampaign: "newsletter",
+        },
+      ],
+    },
+    {
+      id: "recieved",
+      title: "payment recieved",
+      color: "bg-yellow-100",
+      leads: [
+        {
+          id: "8",
+          name: "Rahul Joshi",
+          company: "Retail Chain",
+          value: "₹85,000",
+          assignedTo: "A",
+          phone: "+91 98765 43217",
+          email: "rahul.joshi@email.com",
+          source: "Google Ads",
+          status: "Hot",
+          location: "Kolkata, West Bengal",
+          utmSource: "google",
+          utmMedium: "cpc",
+          utmCampaign: "retail-expansion",
+        },
+      ],
+    },
+    {
+      id: "won",
+      title: "Won",
+      color: "bg-green-100",
+      leads: [
+        {
+          id: "9",
+          name: "Deepak Malhotra",
+          company: "Trading Co",
+          value: "₹42,000",
+          assignedTo: "R",
+          phone: "+91 98765 43218",
+          email: "deepak.malhotra@email.com",
+          source: "Referral",
+          status: "Won",
+          location: "Lucknow, Uttar Pradesh",
+          utmSource: "direct",
+          utmMedium: "referral",
+          utmCampaign: "partner-ref",
+        },
+      ],
+    },
+  ]);
+  // Stats
+  const stats = useMemo(() => {
+    const totalPipelineValue = columns.reduce((sum, column) => {
+      return (
+        sum +
+        column.leads.reduce((colSum, lead) => {
+          const value = parseInt(lead.value.replace(/[^\d]/g, "")) || 0;
+          return colSum + value;
+        }, 0)
+      );
+    }, 0);
+
+    const totalDeals = columns.reduce(
+      (sum, column) => sum + column.leads.length,
+      0
+    );
+    const avgDealSize =
+      totalDeals > 0 ? Math.round(totalPipelineValue / totalDeals) : 0;
+    const wonThisMonth =
+      columns.find((col) => col.id === "won")?.leads.length || 0;
+
+    const formatCurrency = (value) => {
+      if (value >= 100000) return `₹${(value / 100000).toFixed(1)}L`;
+      if (value >= 1000) return `₹${(value / 1000).toFixed(1)}K`;
+      return `₹${value}`;
+    };
+
+    const formatCompact = (value) => {
+      if (value >= 100000) return `₹${(value / 100000).toFixed(1)}L`;
+      if (value >= 1000) return `₹${(value / 1000).toFixed(0)}K`;
+      return `₹${value}`;
+    };
+
+    return [
+      {
+        id: 1,
+        title: "Total Pipeline Value",
+        value: formatCurrency(totalPipelineValue),
+      },
+      { id: 2, title: "Total Deals", value: totalDeals },
+      { id: 3, title: "Avg Deal Size", value: formatCompact(avgDealSize) },
+      { id: 4, title: "Won This Month", value: wonThisMonth },
+    ];
+  }, [columns]);
+
+  const handleDragStart = (lead, columnId) => {
+    setDraggedLead(lead);
+    setDraggedFromColumn(columnId);
+  };
+
+  const handleDrop = (targetColumnId) => {
+    if (!draggedLead || !draggedFromColumn) return;
+
+    const sourceColumn = columns.find((col) => col.id === draggedFromColumn);
+    const targetColumn = columns.find((col) => col.id === targetColumnId);
+    if (!sourceColumn || !targetColumn) return;
+
+    const sourceLeads = sourceColumn.leads.filter(
+      (l) => l.id !== draggedLead.id
+    );
+    const targetLeads = [...targetColumn.leads, draggedLead];
+
+    setColumns(
+      columns.map((col) => {
+        if (col.id === draggedFromColumn)
+          return { ...col, leads: sourceLeads };
+        if (col.id === targetColumnId)
+          return { ...col, leads: targetLeads };
+        return col;
+      })
+    );
+
+    openPopup(
+      "success",
+      "Lead Updated",
+      `Lead moved to ${targetColumn.title}`
+    );
+    setDraggedLead(null);
+    setDraggedFromColumn(null);
+  };
+
+  const handleLeadClick = (lead, column) => {
+    navigate(`/Manager/lead-details/${lead.id}`, {
+      state: { lead, column, fromPipeline: true },
+    });
+  };
+
+  const handleAddDeal = (e) => {
+    e.preventDefault();
+
+    const errors = {};
+    const success = {};
+
+    if (newDeal.name.trim().length < 3)
+      errors.name = "Name must be at least 3 characters";
+    else success.name = "Looks good ✔";
+
+    if (!newDeal.company.trim()) errors.company = "Company is required";
+    else success.company = "Looks good ✔";
+
+    if (!newDeal.value || Number(newDeal.value) <= 0)
+      errors.value = "Value must be greater than 0";
+    else success.value = "Valid value ✔";
+
+    if (!/^[0-9]{10}$/.test(newDeal.phone))
+      errors.phone = "Phone must be 10 digits";
+    else success.phone = "Valid number ✔";
+
+    setFormErrors(errors);
+    setFormSuccess(success);
+
+    if (Object.keys(errors).length > 0) {
+      openPopup(
+        "failure",
+        "Validation Error",
+        "Please fix the form errors before submitting."
+      );
+      return;
+    }
+
+    const finalLead = {
+      id: Date.now().toString(),
+      name: newDeal.name.trim(),
+      company: newDeal.company.trim(),
+      value: `₹${parseInt(newDeal.value).toLocaleString()}`,
+      assignedTo: "K",
+      phone: `+91 ${newDeal.phone}`,
+      rawValue: parseInt(newDeal.value),
+      timestamp: new Date().toISOString(),
+    };
+
+    setColumns((prev) =>
+      prev.map((col) =>
+        col.id === "new" ? { ...col, leads: [...col.leads, finalLead] } : col
+      )
+    );
+
+    openPopup("success", "Deal Added", "Deal added successfully!");
+    setShowAddDealModal(false);
+    setNewDeal({ name: "", company: "", value: "", phone: "" });
+    setFormErrors({});
+    setFormSuccess({});
+  };
+
+  return (
+    <div className="w-full min-w-0 overflow-x-hidden">
+      {/* ✅ POPUP */}
+      <Popup
+        open={popup.open}
+        type={popup.type}
+        title={popup.title}
+        message={popup.message}
+        onClose={closePopup}
+      />
+
+      {/* ✅ PAGE WRAPPER */}
+      <div className="max-w-7xl mx-auto space-y-6 p-4 sm:p-6 lg:p-8">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="text-center sm:text-left">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              Pipeline
+            </h1>
+            <p className="text-gray-500 mt-1 text-sm sm:text-base">
+              Manage deals through your sales pipeline
+            </p>
+          </div>
+
+           {/* Actions */}
+          {/* <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <button
+              className="rounded-xl flex w-full sm:w-auto items-center justify-center gap-2 border border-gray-400 px-4 py-2 hover:bg-gray-200 transition"
+              onClick={() => setShowFilterPopover(!showFilterPopover)}
+            >
+              <Filter className="w-4 h-4" />
+              Filters
+            </button>
+            <button
+              className="bg-blue-600 flex w-full sm:w-auto items-center justify-center gap-2 text-white rounded-xl px-4 py-2 hover:bg-blue-700 transition"
+              onClick={() => setShowAddDealModal(true)}
+            >
+              <Plus className="w-4 h-4" />
+              Add Deal
+            </button>
+          </div>  */}
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {stats.map((item) => (
+            <div
+              key={item.id}
+              className="rounded-2xl border border-gray-200 shadow-sm bg-white"
+            >
+              <div className="p-4 sm:p-6">
+                <p className="text-sm text-gray-500">{item.title}</p>
+                <p className="text-xl sm:text-2xl font-semibold text-gray-900 mt-2">
+                  {item.value}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Pipeline Board */}
+        <div className="w-full overflow-x-auto pb-4">
+          <div className="flex gap-3 sm:gap-4 min-w-max">
+            {columns.map((column) => (
+              <div
+                key={column.id}
+                className="flex-shrink-0 w-[260px] sm:w-[300px] lg:w-[320px]"
+              >
+                <div className="rounded-2xl border border-gray-200 shadow-sm bg-white">
+                  <div className={`${column.color} rounded-t-2xl p-4`}>
+                    <div className="flex items-center justify-between">
+                      <h1 className="text-sm sm:text-base font-semibold">
+                        {column.title}
+                      </h1>
+                      <div className="rounded-lg border-gray-400 border h-6 w-8 text-center bg-white">
+                        <p className="text-sm">{column.leads.length}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={() => handleDrop(column.id)}
+                    className="p-3 sm:p-4 space-y-3 min-h-[280px] sm:min-h-[380px]"
+                  >
+                    {column.leads.map((lead) => (
+                      <div
+                        key={lead.id}
+                        draggable
+                        onDragStart={() => handleDragStart(lead, column.id)}
+                        onDragEnd={() => {
+                          setDraggedLead(null);
+                          setDraggedFromColumn(null);
+                        }}
+                        onClick={() => handleLeadClick(lead, column)}
+                        className="bg-white border border-gray-200 rounded-xl p-3 sm:p-4 cursor-pointer hover:shadow-md transition-all hover:border-blue-300 active:scale-[0.98]"
+                      >
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex items-start gap-2 flex-1 min-w-0">
+                            <GripVertical className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
+                            <div className="flex-1 min-w-0">
+                              <h4 className="text-sm font-medium text-gray-900 truncate">
+                                {lead.name}
+                              </h4>
+                              <p className="text-xs text-gray-600 mt-1 truncate">
+                                {lead.company}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-blue-100 flex-shrink-0 flex items-center justify-center">
+                            <span className="text-sm text-blue-600 font-medium">
+                              {lead.assignedTo}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium text-gray-900">
+                            {lead.value}
+                          </span>
+                          <ArrowRight className="w-4 h-4 text-gray-400" />
+                        </div>
+                      </div>
+                    ))}
+
+                    {column.leads.length === 0 && (
+                      <div className="flex items-center justify-center h-32 text-gray-400 text-sm border-2 border-dashed border-gray-200 rounded-xl">
+                        Drop leads here
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Add Deal Modal */}
+        {showAddDealModal && (
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-3 sm:p-6">
+            <div className="bg-white p-5 sm:p-6 rounded-2xl space-y-4 w-full max-w-md sm:max-w-lg max-h-[90vh] overflow-y-auto">
+              <div className="flex justify-between items-start gap-3">
+                <div>
+                  <h2 className="text-lg sm:text-xl font-semibold">
+                    Add New Deal
+                  </h2>
+                  <p className="text-gray-500 text-sm">
+                    Add a new deal to your pipeline.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowAddDealModal(false)}
+                  className="text-gray-700 hover:text-black"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <form onSubmit={handleAddDeal} className="space-y-4">
+                {/* NAME */}
+                <div>
+                  <label className="text-sm font-medium flex items-center gap-2">
+                    <User className="w-4 h-4" />
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full p-2 bg-gray-100 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={newDeal.name}
+                    onChange={(e) =>
+                      setNewDeal({ ...newDeal, name: e.target.value })
+                    }
+                    placeholder="Enter lead name"
+                  />
+                  {formErrors.name && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {formErrors.name}
+                    </p>
+                  )}
+                  {!formErrors.name && formSuccess.name && (
+                    <p className="text-green-600 text-xs mt-1">
+                      {formSuccess.name}
+                    </p>
+                  )}
+                </div>
+
+                {/* COMPANY */}
+                <div>
+                  <label className="text-sm font-medium flex items-center gap-2">
+                    <Building className="w-4 h-4" />
+                    Company
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full p-2 bg-gray-100 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={newDeal.company}
+                    onChange={(e) =>
+                      setNewDeal({ ...newDeal, company: e.target.value })
+                    }
+                    placeholder="Enter company name"
+                  />
+                  {formErrors.company && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {formErrors.company}
+                    </p>
+                  )}
+                  {!formErrors.company && formSuccess.company && (
+                    <p className="text-green-600 text-xs mt-1">
+                      {formSuccess.company}
+                    </p>
+                  )}
+                </div>
+
+                {/* VALUE */}
+                <div>
+                  <label className="text-sm font-medium flex items-center gap-2">
+                    <IndianRupee className="w-4 h-4" />
+                    Value
+                  </label>
+                  <input
+                    type="number"
+                    className="w-full p-2 bg-gray-100 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={newDeal.value}
+                    onChange={(e) =>
+                      setNewDeal({ ...newDeal, value: e.target.value })
+                    }
+                    placeholder="Enter deal value"
+                  />
+                  {formErrors.value && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {formErrors.value}
+                    </p>
+                  )}
+                  {!formErrors.value && formSuccess.value && (
+                    <p className="text-green-600 text-xs mt-1">
+                      {formSuccess.value}
+                    </p>
+                  )}
+                </div>
+
+                {/* PHONE */}
+                <div>
+                  <label className="text-sm font-medium flex items-center gap-2">
+                    <Phone className="w-4 h-4" />
+                    Phone
+                  </label>
+                  <input
+                    type="text"
+                    maxLength="10"
+                    className="w-full p-2 bg-gray-100 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={newDeal.phone}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, "").slice(0, 10);
+                      setNewDeal({ ...newDeal, phone: value });
+                    }}
+                    placeholder="Enter phone number"
+                  />
+                  {formErrors.phone && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {formErrors.phone}
+                    </p>
+                  )}
+                  {!formErrors.phone && formSuccess.phone && (
+                    <p className="text-green-600 text-xs mt-1">
+                      {formSuccess.phone}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex flex-col sm:flex-row justify-end gap-2 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowAddDealModal(false)}
+                    className="px-4 py-2 border border-gray-300 hover:bg-gray-100 rounded-lg font-semibold flex items-center justify-center gap-2"
+                  >
+                    <X className="w-4 h-4" />
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="bg-black text-white px-4 py-2 hover:bg-gray-800 rounded-lg font-semibold flex items-center justify-center gap-2"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Add Deal
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+
