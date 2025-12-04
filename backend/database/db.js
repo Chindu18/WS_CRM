@@ -10,11 +10,11 @@ const pool = new Pool({
   database: process.env.PG_DATABASE,
   password: process.env.PG_PASSWORD,
   port: process.env.PG_PORT,
-  ssl: false // since you're using local PostgreSQL
+  ssl: { rejectUnauthorized: false } // ✅ required for cloud databases
 });
 
 pool.connect()
-  .then(() => console.log('✅ Connected to PostgreSQL'))
+  .then(() => console.log('✅ Connected to Cloud PostgreSQL'))
   .catch(err => console.error('❌ Connection failed:', err));
 
 export default pool;

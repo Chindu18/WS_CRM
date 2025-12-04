@@ -1,0 +1,20 @@
+{
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": false
+                }
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "devcrmdb.c74smsiga8fv.ap-south-1.rds.amazonaws.com",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "chin-devdb",
+            "password": "DevdbcrmJKQ25",
+            "username": "postgresdev",
+            "database": "postgres"
+        }
+    ]
+}
