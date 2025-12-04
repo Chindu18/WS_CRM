@@ -115,7 +115,7 @@ export default function App() {
 
         {/* ADMIN Routes */}
         <Route 
-          path="/admin/:id" 
+          path="/admin" 
           element={
             <Suspense fallback={<PageLoading />}>
               <AdminLayout />
@@ -135,7 +135,7 @@ export default function App() {
 
         {/* MANAGER Routes */}
         <Route 
-          path="/manager/:id" 
+          path="/manager" 
           element={
             <Suspense fallback={<PageLoading />}>
               <ManagerLayout />
@@ -155,7 +155,7 @@ export default function App() {
 
         {/* TEAM LEAD Routes */}
         <Route 
-          path="/teamlead/:id" 
+          path="/teamlead" 
           element={
             <Suspense fallback={<PageLoading />}>
               <TeamLeadLayout />
@@ -174,7 +174,7 @@ export default function App() {
 
         {/* SALES EXEC Routes */}
         <Route 
-          path="/salesexecutive/:id" 
+          path="/salesexecutive" 
           element={
             <Suspense fallback={<PageLoading />}>
               <SalesLayout />

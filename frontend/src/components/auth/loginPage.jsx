@@ -18,16 +18,16 @@ export function LoginPage() {
                     password:formData.password
                 });
                 console.log(response.data.user);
+                localStorage.setItem('user',JSON.stringify(response.data.user));
                 setuser(response.data.user);
-                console.log(user);
                 if(response.data.user.role==='Admin'){
-                    navigate(`/admin/${response.data.user.id}`);
+                    navigate('/admin');
                 }else if(response.data.user.role==='Manager'){
-                    navigate(`/manager/${response.data.user.id}`);
+                    navigate('/manager');
                 }else if(response.data.user.role==='Team Lead'){
-                    navigate(`/teamlead/${response.data.user.id}`);
+                    navigate('/teamlead');
                 }else if(response.data.user.role==='Sales Executive'){
-                    navigate(`/salesexecutive/${response.data.user.id}`);
+                    navigate('/salesexecutive');
                 }   
 
             
