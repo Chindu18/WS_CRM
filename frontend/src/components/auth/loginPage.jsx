@@ -9,7 +9,7 @@ import {backend_url} from '../../config';
 
 export function LoginPage() {
     const navigate = useNavigate();
- 
+    const [user,setuser]=useState({});
     const handleNavigate = async() => {
      
             try {
@@ -18,14 +18,16 @@ export function LoginPage() {
                     password:formData.password
                 });
                 console.log(response.data.user);
+                setuser(response.data.user);
+                console.log(user);
                 if(response.data.user.role==='Admin'){
-                    navigate('/admin');
+                    navigate(`/admin/${response.data.user.id}`);
                 }else if(response.data.user.role==='Manager'){
-                    navigate('/manager');
+                    navigate(`/manager/${response.data.user.id}`);
                 }else if(response.data.user.role==='Team Lead'){
-                    navigate('/teamlead');
+                    navigate(`/teamlead/${response.data.user.id}`);
                 }else if(response.data.user.role==='Sales Executive'){
-                    navigate('/salesexecutive');
+                    navigate(`/salesexecutive/${response.data.user.id}`);
                 }   
 
             

@@ -1,133 +1,3 @@
-// // App.jsx
-// import "./App.css";
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-// import { LoginPage } from "./components/auth/loginPage";
-// import Header from "./components/header/header";
-
-// // ADMIN pages
-// import AdminPage from "./components/dashboards/admin/adminPage";
-// import LeadsList from "./components/dashboards/admin/a-lead/lead-list/admin-Lead-list";
-// import LeadDetail from "./components/dashboards/admin/a-lead/lead-details/admin-Lead-Details";
-// import { AutomationsModule } from "./components/dashboards/admin/a-automodel/admin-automodel";
-// import AdminSettings from "./components/dashboards/admin/a-settings/admin-settings";
-// import { AdminCallPage } from "./components/dashboards/admin/a-Calls/Admin-Calls";
-// import { PaymentsModule } from "./components/dashboards/admin/a-payments/Admin-payments-Pages";
-// import { AdminReports } from "./components/dashboards/admin/a-reports/Admin-Reports";
-// import AdminPipeline from "./components/dashboards/admin/a-pieline/Admin-Pipeline";
-
-// // MANAGER pages
-// import MainManagerDashboard from "./components/dashboards/Manager/ManagerDashboard";
-// import ManagerLeadsList from "./components/dashboards/Manager/ManagerLead/lead-list/manager-Lead-list";
-// import ManagerLeadDetail from "./components/dashboards/Manager/ManagerLead/lead-details/Manager-Lead-Details";
-// import { ManagerCallsModule } from "./components/dashboards/Manager/ManagerCalls/ManagerCalls";
-// import ManagerPaymentsModule from "./components/dashboards/Manager/ManagerPayments/ManagerPayments";
-// import ManagerPipeline from "./components/dashboards/Manager/ManagerPieline/Manager-Pipeline";
-// import { ManagerReportsModule } from "./components/dashboards/Manager/ManagerReports/ManagerReports";
-// import ManagerSettings from "./components/dashboards/Manager/Managersettings/manager-settings";
-// import { ManagerAutomationsModule } from "./components/dashboards/Manager/ManagerAutomation/ManagerAutomation";
-
-// // TEAM LEAD pages
-// import { TeamLeadDashboard } from "./components/dashboards/Teamlead/Dashboard/Dashboard";
-// import TeamLeadsList from "./components/dashboards/Teamlead/Leads/tl-lead-list/Tl-Lead-list";
-// import TeamleadLeadDetail from "./components/dashboards/Teamlead/Leads/tl-lead-details/TL-Lead-Details";
-// import { TeamLeadCallsModule } from "./components/dashboards/Teamlead/Calls/TeamleadCalls";
-// import TeamLeadPaymentsModule from "./components/dashboards/Teamlead/Payment/TlPayment";
-// import TeamLeadPipeline from "./components/dashboards/Teamlead/Pipeline/TlPipeline";
-// import { TeamLeadReportsModule } from "./components/dashboards/Teamlead/Reports/TlReports";
-// import { TeamLeadAutomationsModule } from "./components/dashboards/Teamlead/Automation/TlAutomation";
-
-// // SALES EXEC pages
-// import SalesExecutiveDashboard from "./components/dashboards/SalesExecutive/SalesDashboard/SalesDashboard";
-// import SalesLeadsList from "./components/dashboards/SalesExecutive/salesLead/sales-lead-list/sales-Lead-list";
-// import SalesLeadDetail from "./components/dashboards/SalesExecutive/salesLead/sales-lead-details/sales-Lead-Details";
-// import { SalesCallsModule } from "./components/dashboards/SalesExecutive/Calls/SalesCall";
-// import SalesPaymentsModule from "./components/dashboards/SalesExecutive/Payments/SalesPayment";
-// import { SalesReportsModule } from "./components/dashboards/SalesExecutive/Reports/SalesReports";
-// import SalesleadPipeline from "./components/dashboards/SalesExecutive/Pipeline/SalesPipeline";
-
-// // layouts
-// import AdminLayout from "./components/dashboards/admin/Layouts/AdminLayout";
-// import ManagerLayout from "./components/dashboards/Manager/Layouts/ManagerLayouts";
-// import TeamLeadLayout from "./components/dashboards/Teamlead/Layouts/TeamleadLayout";
-// import SalesLayout from "./components/dashboards/SalesExecutive/Layouts/SalesLayout";
-
-// // ✅ global pages for navbar
-// import Accounts from "./components/Navbar/Accounts";
-// import Profile from "./components/Navbar/Profile";
-// import Settings from "./components/Navbar/Settings";
-
-// export default function App() {
-//   return (
-//     <BrowserRouter>
-//       <Routes>
-//         {/* Public */}
-//         <Route path="/" element={<Header />} />
-//         <Route path="/login" element={<LoginPage />} />
-
-//         {/* ✅ GLOBAL pages (separate full pages) */}
-//         <Route path="/accounts" element={<Accounts />} />
-//         <Route path="/profile" element={<Profile />} />
-//         <Route path="/settings" element={<Settings />} />
-
-//         {/* ADMIN */}
-//         <Route path="/admin" element={<AdminLayout />}>
-//           <Route index element={<AdminPage />} />
-//           <Route path="lead-list" element={<LeadsList />} />
-//           <Route path="lead-details/:id" element={<LeadDetail />} />
-//           <Route path="automation" element={<AutomationsModule />} />
-//           <Route path="settings" element={<AdminSettings />} />
-//           <Route path="call" element={<AdminCallPage />} />
-//           <Route path="payment" element={<PaymentsModule />} />
-//           <Route path="report" element={<AdminReports />} />
-//           <Route path="pipeline" element={<AdminPipeline />} />
-//         </Route>
-
-//         {/* MANAGER */}
-//         <Route path="/manager" element={<ManagerLayout />}>
-//           <Route index element={<MainManagerDashboard />} />
-//           <Route path="lead-list" element={<ManagerLeadsList />} />
-//           <Route path="lead-details/:id" element={<ManagerLeadDetail />} />
-//           <Route path="call" element={<ManagerCallsModule />} />
-
-//           {/* ⚠️ Manager-specific settings page */}
-//           <Route path="settings" element={<ManagerSettings />} />
-
-//           <Route path="report" element={<ManagerReportsModule />} />
-//           <Route path="pipeline" element={<ManagerPipeline />} />
-//           <Route path="payment" element={<ManagerPaymentsModule />} />
-//           <Route path="automation" element={<ManagerAutomationsModule />} />
-//         </Route>
-
-//         {/* TEAM LEAD */}
-//         <Route path="/teamlead" element={<TeamLeadLayout />}>
-//           <Route index element={<TeamLeadDashboard />} />
-//           <Route path="lead-list" element={<TeamLeadsList />} />
-//           <Route path="lead-details/:id" element={<TeamleadLeadDetail />} />
-//           <Route path="call" element={<TeamLeadCallsModule />} />
-//           <Route path="payment" element={<TeamLeadPaymentsModule />} />
-//           <Route path="pipeline" element={<TeamLeadPipeline />} />
-//           <Route path="report" element={<TeamLeadReportsModule />} />
-//           <Route path="automation" element={<TeamLeadAutomationsModule />} />
-//         </Route>
-
-//         {/* SALES EXEC */}
-//         <Route path="/salesexecutive" element={<SalesLayout />}>
-//           <Route index element={<SalesExecutiveDashboard />} />
-//           <Route path="lead-list" element={<SalesLeadsList />} />
-//           <Route path="lead-details/:id" element={<SalesLeadDetail />} />
-//           <Route path="pipeline" element={<SalesleadPipeline />} />
-//           <Route path="call" element={<SalesCallsModule />} />
-//           <Route path="payment" element={<SalesPaymentsModule />} />
-//           <Route path="report" element={<SalesReportsModule />} />
-//         </Route>
-
-//         {/* 404 */}
-//         <Route path="*" element={<div className="p-10">404 Not Found</div>} />
-//       </Routes>
-//     </BrowserRouter>
-//   );
-// }
 
 
 import { Suspense, lazy } from "react";
@@ -245,7 +115,7 @@ export default function App() {
 
         {/* ADMIN Routes */}
         <Route 
-          path="/admin" 
+          path="/admin/:id" 
           element={
             <Suspense fallback={<PageLoading />}>
               <AdminLayout />
@@ -265,7 +135,7 @@ export default function App() {
 
         {/* MANAGER Routes */}
         <Route 
-          path="/manager" 
+          path="/manager/:id" 
           element={
             <Suspense fallback={<PageLoading />}>
               <ManagerLayout />
@@ -285,7 +155,7 @@ export default function App() {
 
         {/* TEAM LEAD Routes */}
         <Route 
-          path="/teamlead" 
+          path="/teamlead/:id" 
           element={
             <Suspense fallback={<PageLoading />}>
               <TeamLeadLayout />
@@ -304,7 +174,7 @@ export default function App() {
 
         {/* SALES EXEC Routes */}
         <Route 
-          path="/salesexecutive" 
+          path="/salesexecutive/:id" 
           element={
             <Suspense fallback={<PageLoading />}>
               <SalesLayout />
