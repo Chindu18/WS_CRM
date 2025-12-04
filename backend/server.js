@@ -5,6 +5,7 @@ import './database/db.js';
 import userRoutes from './routes/userRoutes.js';
 import { loginUser } from './controller/loginController.js';
 import loginRouter from './routes/LogIn.js';
+import leadRouter from './routes/leadRoutes.js';
 
 dotenv.config();
 
@@ -18,6 +19,9 @@ app.use(express.json()); // for parsing JSON data
 // Routes
 app.use('/api/login', loginRouter);
 app.use('/api/users', userRoutes);
+
+//admin lead routes
+app.use('/api/admin',leadRouter)
 
 app.get('/', (req, res) => {
   res.send("CRM BACKEND SERVER RUN");

@@ -638,6 +638,10 @@ import LeadForm from "../lead-components/add-Lead-form";
 import EmailModal from "../lead-components/lead-mail";
 import WhatsAppModal from "../lead-components/lead-whatsup";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+
+
+
 
 // Mock data
 const allLeadsData = [
@@ -714,6 +718,7 @@ const allLeadsData = [
     lastContact: "1 hour ago",
   },
 ];
+
 
 const AssignLeadModal = ({ isOpen, onClose, lead, onAssign, openPopup }) => {
   const [assignTo, setAssignTo] = useState("");
