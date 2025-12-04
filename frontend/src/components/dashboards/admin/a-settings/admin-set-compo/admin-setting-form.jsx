@@ -11,20 +11,50 @@ const AddUserForm = ({ onClose, onAddUser }) => {
     status: 'active'
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (formData.name && formData.email && formData.password) {
-      onAddUser(formData);
-      setFormData({
-        name: '',
-        email: '',
-        password: '',
-        role: 'Sales Executive',
-        status: 'active'
-      });
-    }
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (formData.name && formData.email && formData.password) {
+  //     onAddUser(formData);
+  //     setFormData({
+  //       name: '',
+  //       email: '',
+  //       password: '',
+  //       role: 'Sales Executive',
+  //       status: 'active'
+  //     });
+  //   }
+  // };
 
+    const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (formData.name && formData.email && formData.password) {
+    try {
+      const response = await fetch('http://localhost:5000/api/users/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        alert('✅ User added successfully!');
+        setFormData({
+          name: '',
+          email: '',
+          password: '',
+          role: 'Sales Executive',
+          status: 'active'
+        });
+        onClose(); // close modal if needed
+      } else {
+        alert('❌ Failed to add user');
+      }
+    } catch (err) {
+      console.error('Error:', err);
+      alert('❌ Server error');
+    }
+  }
+};
   const handleChange = (e) => {
     setFormData({
       ...formData,

@@ -2,7 +2,39 @@ import { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Logo from '../../assets/logo.png';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import axios from 'axios';
+import {backend_url} from '../../config';
+
 export function LoginPage() {
+    const navigate = useNavigate();
+ 
+    const handleNavigate = async() => {
+     
+            try {
+                const response=await axios.post(`${backend_url}/api/login/`,{
+                    email:formData.email,
+                    password:formData.password
+                });
+                console.log(response.data.user);
+                if(response.data.user.role==='Admin'){
+                    navigate('/admin');
+                }else if(response.data.user.role==='Manager'){
+                    navigate('/manager');
+                }else if(response.data.user.role==='Team Lead'){
+                    navigate('/teamlead');
+                }else if(response.data.user.role==='Sales Executive'){
+                    navigate('/salesexecutive');
+                }   
+
+            
+            } catch (error) {
+                console.error('❌ Error logging in user:', error);
+            }
+     
+    };
+
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
         email: '',
@@ -77,11 +109,11 @@ export function LoginPage() {
             console.log(formData)
 
             // Reset form
-            setFormData({
-                email: "",
-                password: "",
-                rememberMe: false
-            });
+            // setFormData({
+            //     email: "",
+            //     password: "",
+            //     rememberMe: false
+            // });
 
             //   setTimeout(() => {
             //     onLogin();
@@ -219,6 +251,7 @@ export function LoginPage() {
                             type="submit"
                             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-xl disabled:opacity-50 font-medium"
                             disabled={isSubmitting}
+                            onClick={handleNavigate}
                         >
                             {isSubmitting ? (
                                 <span className="flex items-center justify-center">
